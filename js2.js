@@ -25,22 +25,25 @@ function generateRandomRoute() {
     const dropdown = document.getElementById('dropdown');
     const selectedSection = dropdown.value;
 
-    const [startStation, goalStation] = selectedSection.split(" - ");
-    
-    if (stationConnections[startStation] && stationConnections[goalStation]) {
+    if (selectedSection.includes(" - ")) {
+        const [startStation, goalStation] = selectedSection.split(" - ");
+        const shouldSwap = Math.random() < 0.5;
+
+        const [actualStart, actualGoal] = shouldSwap ? [goalStation, startStation] : [startStation, goalStation];
+
         let result = [];
         do {
-            result = generateRandomRoutePython(startStation, goalStation);
+            result = generateRandomRoutePython(actualStart, actualGoal);
         } while (result.length <= 1);
 
         const output = document.getElementById('output');
         output.textContent = `Random Route: ${result.join(' → ')}`;
     } else {
-        console.error('Selected section not found in stationConnections.');
+        console.error('Invalid section format.');
     }
 }
 
-// Rest of the code remains unchanged// Call the Python equivalent to generate a random route
+
 function generateRandomRoutePython(startStation, goalStation) {
     const stationList = Object.keys(stationConnections);
 
