@@ -40,5 +40,44 @@ function generateRandomRoute() {
     }
 }
 
-// Rest of the code remains unchanged
+// Rest of the code remains unchanged// Call the Python equivalent to generate a random route
+function generateRandomRoutePython(startStation, goalStation) {
+    const stationList = Object.keys(stationConnections);
+
+    const route = [startStation];
+    const visitedStations = new Set();
+    visitedStations.add(startStation);
+
+    while (true) {
+        const currentStation = route[route.length - 1];
+        const availableStations = stationConnections[currentStation].filter(station => !route.slice(1).includes(station));
+
+        const unvisitedStations = availableStations.filter(station => !visitedStations.has(station));
+
+        if (unvisitedStations.length === 0) {
+            if (route.length === 1) {
+                break;
+            }
+            route.pop();
+            continue;
+        } else {
+            const nextStation = unvisitedStations[Math.floor(Math.random() * unvisitedStations.length)];
+            route.push(nextStation);
+
+            if (nextStation === goalStation) {
+                if (new Set(route).size === 2) {
+                    route.pop();
+                    continue;
+                }
+
+                return route;
+            }
+
+            visitedStations.add(nextStation);
+        }
+    }
+
+    return route;
+}
+
 
