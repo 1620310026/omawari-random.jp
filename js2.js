@@ -32,9 +32,16 @@ function generateRandomRoute() {
 }
 
 // Generate a random goal station
+// Generate a random goal station
 function generateRandomGoal(availableStations) {
-    return availableStations[Math.floor(Math.random() * availableStations.length)];
+    if (availableStations) {
+        return availableStations[Math.floor(Math.random() * availableStations.length)];
+    } else {
+        console.error('No available stations provided.');
+        return '';
+    }
 }
+
 
 // Call the Python equivalent to generate a random route
 function generateRandomRoutePython(startStation, goalStation) {
