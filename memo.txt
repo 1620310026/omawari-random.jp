@@ -1,0 +1,1 @@
+setsuzoku.jsonを変更するときは、kukan.pyを実行
