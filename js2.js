@@ -1,7 +1,7 @@
 let stationConnections = {};
 
 // Load station connections from the JSON file
-fetch('http://localhost:8000')
+fetch('setsuzoku.json')
     .then(response => response.json())
     .then(data => {
         stationConnections = data;
