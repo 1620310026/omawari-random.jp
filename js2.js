@@ -20,18 +20,6 @@ fetch('setsuzoku.json')
         console.error('Error loading station connections:', error);
     });
 
-// Generate a random route and display the result
-function generateRandomRoute() {
-    const dropdown = document.getElementById('dropdown');
-    const selectedStation = dropdown.value;
-    const goalStation = generateRandomGoal(stationConnections[selectedStation]);
-    const result = generateRandomRoutePython(selectedStation, goalStation);
-
-    const output = document.getElementById('output');
-    output.textContent = `Random Route: ${result.join(' → ')}`;
-}
-
-// Generate a random goal station
 // Generate a random goal station
 function generateRandomGoal(availableStations) {
     if (availableStations) {
@@ -41,6 +29,23 @@ function generateRandomGoal(availableStations) {
         return '';
     }
 }
+
+// Generate a random route and display the result
+function generateRandomRoute() {
+    const dropdown = document.getElementById('dropdown');
+    const selectedStation = dropdown.value;
+
+    if (stationConnections[selectedStation]) {
+        const goalStation = generateRandomGoal(stationConnections[selectedStation]);
+        const result = generateRandomRoutePython(selectedStation, goalStation);
+
+        const output = document.getElementById('output');
+        output.textContent = `Random Route: ${result.join(' → ')}`;
+    } else {
+        console.error('Selected station not found in stationConnections.');
+    }
+}
+
 
 
 // Call the Python equivalent to generate a random route
