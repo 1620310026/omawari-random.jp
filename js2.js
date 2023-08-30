@@ -15,6 +15,9 @@ fetch('setsuzoku.json')
             option.textContent = station;
             dropdown.appendChild(option);
         });
+    })
+    .catch(error => {
+        console.error('Error loading station connections:', error);
     });
 
 // Generate a random route and display the result
