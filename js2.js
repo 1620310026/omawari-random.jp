@@ -19,6 +19,7 @@ fetch('setsuzoku.json')
 
 // Generate a random route and display the result
 function generateRandomRoute() {
+    const dropdown = document.getElementById('dropdown');
     const selectedStation = dropdown.value;
     const goalStation = generateRandomGoal(stationConnections[selectedStation]);
     const result = generateRandomRoutePython(selectedStation, goalStation);
