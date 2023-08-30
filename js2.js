@@ -20,6 +20,9 @@ fetch('setsuzoku.json')
         console.error('Error loading station connections:', error);
     });
 
+
+
+
 // Generate a random goal station
 function generateRandomGoal(availableStations) {
     if (availableStations) {
@@ -46,8 +49,7 @@ function generateRandomRoute() {
     }
 }
 
-
-
+// Rest of the code remains unchanged
 // Call the Python equivalent to generate a random route
 function generateRandomRoutePython(startStation, goalStation) {
     const stationList = Object.keys(stationConnections);
