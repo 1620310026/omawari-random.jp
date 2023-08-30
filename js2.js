@@ -9,12 +9,7 @@ fetch('setsuzoku.json')
         const dropdown = document.getElementById('dropdown');
         const stationNames = Object.keys(stationConnections);
 
-        stationNames.forEach(station => {
-            const option = document.createElement('option');
-            option.value = station;
-            option.textContent = station;
-            dropdown.appendChild(option);
-        });
+        
     })
     .catch(error => {
         console.error('Error loading station connections:', error);
