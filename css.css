@@ -1,12 +1,40 @@
+/* css.css */
 body {
     font-family: Arial, sans-serif;
-    background-color: #ffffff;
-}
-
-p {
-    font-size: 18px;
-    margin-bottom: 0px;
-    color: #777;
-    line-height: 1.5;
-    margin: 0; 
+    text-align: center;
+    margin: 0;
+    padding: 0;
   }
+  
+  p {
+    font-size: 18px;
+    margin: 20px;
+  }
+  
+  select {
+    font-size: 16px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 10px;
+  }
+  
+  button {
+    font-size: 16px;
+    padding: 8px 15px;
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #2980b9;
+  }
+  
+  #output {
+    font-size: 20px;
+    margin: 20px;
+  }
+  
