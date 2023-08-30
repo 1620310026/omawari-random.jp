@@ -1,1 +1,2 @@
 setsuzoku.jsonを変更するときは、kukan.pyを実行
+その後、結果をhtmlに入れる
