@@ -8,15 +8,16 @@ body {
   
   p {
     font-size: 18px;
-    margin: 20px;
+    margin: 0px 0px;
   }
   
   select {
-    font-size: 16px;
-    padding: 5px;
+    font-size:16px;
+    padding: 8px;
     border: 1px solid #ccc;
     border-radius: 5px;
     margin-right: 10px;
+
   }
   
   button {
@@ -37,4 +38,48 @@ body {
     font-size: 20px;
     margin: 20px;
   }
+
+  .custom-radio {
+    display: inline-block
+
+  }
   
+  .custom-radio input[type="radio"] {
+    display: none; 
+  }
+  
+  .custom-radio .radio-text {
+    display: inline-block;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    color: #727272;
+    font-weight: 520;
+
+
+  }
+  
+  .custom-radio input[type="radio"]:checked + .radio-text {
+    background-color: #3498db;
+    color: #fff;
+  }
+
+  #form{
+    margin: 50px;
+    padding: 5px 10px;
+    border-radius: 10px;    
+    text-align: left;
+    border: 5px solid #95ccff;
+
+  }
+  
+  #koumoku{
+    font-size: 20px;
+    font-weight: 850;
+    color: #3480db;
+
+    
+
+  };
+
