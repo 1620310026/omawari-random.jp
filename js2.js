@@ -53,6 +53,8 @@ let stationConnections = {
     "浜川崎": ["鶴見", "尻手"],
     "日暮里": ["上野", "田端", "尾久"]
 };
+let ekisuumin = 0
+let ekisuumax = 100
 
 
 // プルダウンメニューに駅の情報を追加
@@ -64,21 +66,21 @@ for (const station in stationConnections) {
     dropdown.appendChild(option);
 }
 
-// JavaScript版のランダムルート生成関数
 function generateRandomRouteJS(selectedStation) {
     const stationList = Object.keys(stationConnections);
     const startGoal = selectedStation;
-    
     const route = [startGoal];
     const visitedStations = new Set();
-
+    const selectedEkisuu = document.querySelector('input[name="ekisuu"]:checked').value;
+    const [ekisuumin, ekisuumax] = selectedEkisuu.split(",").map(Number);
+    
     try {
         while (true) {
             const currentStation = route[route.length - 1];
             const availableStations = stationConnections[currentStation].filter(station => !route.slice(1).includes(station));
-
+            
             const unvisitedStations = availableStations.filter(station => !visitedStations.has(station));
-
+            
             if (unvisitedStations.length === 0) {
                 if (route.length === 1) {
                     break;
@@ -88,45 +90,38 @@ function generateRandomRouteJS(selectedStation) {
             } else {
                 const nextStation = unvisitedStations[Math.floor(Math.random() * unvisitedStations.length)];
                 route.push(nextStation);
-
+                
                 if (nextStation === startGoal) {
                     if (new Set(route).size === 2) {
                         route.pop();
                         continue;
                     }
+                    
+                    if (route.length >= ekisuumin && route.length <= ekisuumax) {
+                        console.log("ルート: " + route.join(" → "));
+                        const output = document.getElementById('output');
+                        output.textContent = route.join(" → ");
 
-                    console.log("ルート: " + route.join(" → "));
-                    const output = document.getElementById('output');
-                    output.textContent = route.join(" → ");
-                    return route;
+                        
+                        return route;
+
+                    } else {
+                        // 経由駅数が制限を超える場合、経路を破棄して再生成
+                        route.length = 1;
+                        visitedStations.clear();
+                        continue;
+                    }
                 }
                 visitedStations.add(nextStation);
             }
         }
     } catch (error) {
         console.error("エラーが発生しました。ルートを再生成します。");
-        return generateRandomRouteJS(selectedStation); // エラーが発生した場合、再生成
+        return generateRandomRouteJS(selectedStation, ekisuumin, ekisuumax);成
     }
 }
 
 
-function generateRoute() {
-    const dropdown = document.getElementById("dropdown");
-    const selectedSection = (dropdown.value);
-    console.log(selectedSection)
-
-    if (selectedSection.includes("-")) {
-        // 区間が選択された場合は以前のコードを実行
-        generateRandomRoute();
-    }
-    else {
-        // 駅が単独で選択された場合は新しいコードを実行
-        generateRandomRouteJS(selectedSection);
-    }
-}
-
-
-// 以前のランダムルート生成関数（区間が選択された場合に使用）
 function generateRandomRoute() {
     const dropdown = document.getElementById('dropdown');
     const selectedSection = dropdown.value;
@@ -135,15 +130,73 @@ function generateRandomRoute() {
     if (selectedSection.includes(" - ")) {
         const [startStation, goalStation] = selectedSection.split(" - ");
         const shouldSwap = Math.random() < 0.5;
+        const selectedEkisuu = document.querySelector('input[name="ekisuu"]:checked').value;
+        const [ekisuumin, ekisuumax] = selectedEkisuu.split(",").map(Number);
         const [actualStart, actualGoal] = shouldSwap ? [goalStation, startStation] : [startStation, goalStation];
+
         let result = [];
         do {
-            result = generateRandomRouteJS(actualStart);
-        } while (result.length <= 1);
+            result = generateRandomRoutePython(actualStart, actualGoal);
+        } while (result.length <= 1 || result.length > ekisuumax || result.length < ekisuumin);
+
 
         const output = document.getElementById('output');
         output.textContent = `始点駅→ ${result.join(' → ')} →終点駅`;
     } else {
         console.error('Invalid section format.');
+    }
+}
+
+
+function generateRandomRoutePython(startStation, goalStation) {
+    const stationList = Object.keys(stationConnections);
+
+    const route = [startStation];
+    const visitedStations = new Set();
+    visitedStations.add(startStation);
+
+    while (true) {
+        const currentStation = route[route.length - 1];
+        const availableStations = stationConnections[currentStation].filter(station => !route.slice(1).includes(station));
+
+        const unvisitedStations = availableStations.filter(station => !visitedStations.has(station));
+
+        if (unvisitedStations.length === 0) {
+            if (route.length === 1) {
+                break;
+            }
+            route.pop();
+            continue;
+        } else {
+            const nextStation = unvisitedStations[Math.floor(Math.random() * unvisitedStations.length)];
+            route.push(nextStation);
+
+            if (nextStation === goalStation) {
+                if (new Set(route).size === 2) {
+                    route.pop();
+                    continue;
+                }
+
+                return route;
+            }
+
+            visitedStations.add(nextStation);
+        }
+    }
+
+    return route;
+}
+
+// ボタンクリック時に呼び出す関数
+function generateRoute() {
+    const dropdown = document.getElementById("dropdown");
+    const selectedSection = dropdown.value;
+
+    if (selectedSection.includes(" - ")) {
+        // 区間が選択された場合は以前のコードを実行
+        generateRandomRoute();
+    } else {
+        // 駅が単独で選択された場合は新しいコードを実行
+        generateRandomRouteJS(selectedSection);
     }
 }
