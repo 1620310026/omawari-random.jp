@@ -141,7 +141,7 @@ function generateRandomRoute() {
 
 
         const output = document.getElementById('output');
-        output.textContent = `始点駅→ ${result.join(' → ')} →終点駅`;
+        output.textContent = `始点駅 → ${result.join(' → ')} → 終点駅`;
     } else {
         console.error('Invalid section format.');
     }

@@ -2,8 +2,9 @@
 body {
     font-family: Arial, sans-serif;
     text-align: center;
-    margin: 0;
-    padding: 0;
+    text-align: left;
+    margin: 20px;
+    padding-top: 50px; 
   }
   
   p {
@@ -36,7 +37,6 @@ body {
   
   #output {
     font-size: 20px;
-    margin: 20px;
   }
 
   .custom-radio {
@@ -66,7 +66,6 @@ body {
   }
 
   #form{
-    margin: 50px;
     padding: 5px 10px;
     border-radius: 10px;    
     text-align: left;
@@ -78,8 +77,57 @@ body {
     font-size: 20px;
     font-weight: 850;
     color: #3480db;
+  }
+  ul{
+  margin-block-end: 0px;
+  margin-block-start: 0px;
+  }
+/* ナビゲーションバーのスタイル */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #3480db;
+  color: #fff;
+  height: 50px; 
+  display: inline-block;
+  justify-content: flex-start; /* テキストを左揃えにする */
+  margin: 0px;
+  font-size: 0px;
 
-    
+}
 
-  };
+nav ul {
+list-style: none;
+margin: 0px;
+height: 50px; 
+letter-spacing:normal;
 
+}
+
+nav ul li {
+  display: inline-block;
+}
+
+nav ul a {
+  display: inline-block;
+  text-decoration: none;
+  font-size: 15px;
+  color: #fff;
+  font-weight: bold;
+  padding-left: 10px;
+  padding-right: 10px;
+  height: 50px; 
+  line-height:50px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-block-end: 0px;
+  margin-block-start: 0px;
+  font-size: 15px;
+
+}
+
+nav ul li:hover {
+  background-color: #1856a1;
+}
