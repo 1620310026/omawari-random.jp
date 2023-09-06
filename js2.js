@@ -226,7 +226,9 @@ function liststation(){
     if (selectedValues.includes("倉賀野") && selectedValues.includes("友部")) {
         selectedValues.push("小山");
         selectedValues.push("高崎");
-
+    } 
+    if (selectedValues.includes("安房鴨川") && selectedValues.includes("友部")) {
+        selectedValues.push("木更津");
     } 
     return selectedValues
 }
