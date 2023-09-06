@@ -1,0 +1,1 @@
+# omawari-random.jp
