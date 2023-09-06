@@ -51,7 +51,7 @@ let stationConnections = {
     "川崎": ["品川", "鶴見", "尻手"],
     "高崎": ["小山", "倉賀野"],
     "浜川崎": ["鶴見", "尻手"],
-    "日暮里": ["上野", "田端", "尾久"]
+    "日暮里": ["上野", "田端", "尾久", "新松戸"]
 };
 let ekisuumin = 0
 let ekisuumax = 100
@@ -73,78 +73,93 @@ function generateRandomRouteJS(selectedStation) {
     const visitedStations = new Set();
     const selectedEkisuu = document.querySelector('input[name="ekisuu"]:checked').value;
     const [ekisuumin, ekisuumax] = selectedEkisuu.split(",").map(Number);
-    
-    try {
-        while (true) {
-            const currentStation = route[route.length - 1];
-            const availableStations = stationConnections[currentStation].filter(station => !route.slice(1).includes(station));
-            
-            const unvisitedStations = availableStations.filter(station => !visitedStations.has(station));
-            
-            if (unvisitedStations.length === 0) {
-                if (route.length === 1) {
-                    break;
-                }
-                route.pop();
-                continue;
-            } else {
-                const nextStation = unvisitedStations[Math.floor(Math.random() * unvisitedStations.length)];
-                route.push(nextStation);
+    let keiyufuka = liststation();
+    if (isInArray(keiyufuka, startGoal)) {
+        const output = document.getElementById('output');
+        output.textContent = "経由不可の駅を通らないルートを作成できません。";
+    }else{
+        try {
+            while (true) {
+                const currentStation = route[route.length - 1];
+                const availableStations = stationConnections[currentStation].filter(station => !route.slice(1).includes(station));
                 
-                if (nextStation === startGoal) {
-                    if (new Set(route).size === 2) {
-                        route.pop();
-                        continue;
+                const unvisitedStations = availableStations.filter(station => !visitedStations.has(station));
+                
+                if (unvisitedStations.length === 0) {
+                    if (route.length === 1) {
+                        break;
                     }
+                    route.pop();
+                    continue;
+                } else {
+                    const nextStation = unvisitedStations[Math.floor(Math.random() * unvisitedStations.length)];
+                    route.push(nextStation);
                     
-                    if (route.length >= ekisuumin && route.length <= ekisuumax) {
-                        console.log("ルート: " + route.join(" → "));
-                        const output = document.getElementById('output');
-                        output.textContent = route.join(" → ");
-
+                    if (nextStation === startGoal) {
+                        if (new Set(route).size === 2) {
+                            route.pop();
+                            continue;
+                        }
                         
-                        return route;
-
-                    } else {
-                        // 経由駅数が制限を超える場合、経路を破棄して再生成
-                        route.length = 1;
-                        visitedStations.clear();
-                        continue;
+                        if (route.length >= ekisuumin && route.length <= ekisuumax && !isInArray(keiyufuka,"ルート: " + route.join(" → "))) {
+                            console.log("ルート: " + route.join(" → "));
+                            const output = document.getElementById('output');
+                            output.textContent = route.join(" → ");
+    
+                            
+                            return route;
+    
+                        } else {
+                            route.length = 1;
+                            visitedStations.clear();
+                            continue;
+                        }
                     }
+                    visitedStations.add(nextStation);
                 }
-                visitedStations.add(nextStation);
             }
+        } catch (error) {
+            console.error("エラーが発生しました。ルートを再生成します。");
+            return generateRandomRouteJS(selectedStation, ekisuumin, ekisuumax);
         }
-    } catch (error) {
-        console.error("エラーが発生しました。ルートを再生成します。");
-        return generateRandomRouteJS(selectedStation, ekisuumin, ekisuumax);成
     }
 }
 
 
-function generateRandomRoute() {
+
+function generateRandomRoute(selectedValues) {
     const dropdown = document.getElementById('dropdown');
     const selectedSection = dropdown.value;
-
-
-    if (selectedSection.includes(" - ")) {
-        const [startStation, goalStation] = selectedSection.split(" - ");
-        const shouldSwap = Math.random() < 0.5;
-        const selectedEkisuu = document.querySelector('input[name="ekisuu"]:checked').value;
-        const [ekisuumin, ekisuumax] = selectedEkisuu.split(",").map(Number);
-        const [actualStart, actualGoal] = shouldSwap ? [goalStation, startStation] : [startStation, goalStation];
-
-        let result = [];
-        do {
-            result = generateRandomRoutePython(actualStart, actualGoal);
-        } while (result.length <= 1 || result.length > ekisuumax || result.length < ekisuumin);
-
-
+    if (isInArray(selectedValues, selectedSection)) {
         const output = document.getElementById('output');
-        output.textContent = `始点駅 → ${result.join(' → ')} → 終点駅`;
+        output.textContent = "経由不可の駅を通らないルートを作成できません。";
+
     } else {
-        console.error('Invalid section format.');
-    }
+        if (selectedSection.includes(" - ")) {
+            const [startStation, goalStation] = selectedSection.split(" - ");
+            const shouldSwap = Math.random() < 0.5;
+            const selectedEkisuu = document.querySelector('input[name="ekisuu"]:checked').value;
+            const [ekisuumin, ekisuumax] = selectedEkisuu.split(",").map(Number);
+            const [actualStart, actualGoal] = shouldSwap ? [goalStation, startStation] : [startStation, goalStation];
+    
+            let result = [];
+            do {
+                result = generateRandomRoutePython(actualStart, actualGoal);
+            }while (
+                result.length <= 1 ||
+                result.length > ekisuumax ||
+                result.length < ekisuumin ||
+                isInArray(selectedValues, `始点駅 → ${result.join(' → ')} → 終点駅`)
+            );
+    
+    
+            const output = document.getElementById('output');
+            output.textContent = `始点駅 → ${result.join(' → ')} → 終点駅`;
+            
+        } else {
+            console.error('Invalid section format.');
+        }
+      }      
 }
 
 
@@ -168,18 +183,19 @@ function generateRandomRoutePython(startStation, goalStation) {
             route.pop();
             continue;
         } else {
+            
             const nextStation = unvisitedStations[Math.floor(Math.random() * unvisitedStations.length)];
-            route.push(nextStation);
+                route.push(nextStation);
 
-            if (nextStation === goalStation) {
-                if (new Set(route).size === 2) {
-                    route.pop();
-                    continue;
+                if (nextStation === goalStation) {
+                    if (new Set(route).size === 2) {
+                        route.pop();
+                        continue;
+                    }
+
+                    return route;
                 }
-
-                return route;
-            }
-
+            
             visitedStations.add(nextStation);
         }
     }
@@ -187,16 +203,43 @@ function generateRandomRoutePython(startStation, goalStation) {
     return route;
 }
 
-// ボタンクリック時に呼び出す関数
 function generateRoute() {
     const dropdown = document.getElementById("dropdown");
     const selectedSection = dropdown.value;
-
+    let result = liststation();
     if (selectedSection.includes(" - ")) {
-        // 区間が選択された場合は以前のコードを実行
-        generateRandomRoute();
+        generateRandomRoute(result);
     } else {
-        // 駅が単独で選択された場合は新しいコードを実行
         generateRandomRouteJS(selectedSection);
     }
 }
+
+function liststation(){
+    var checkboxes = document.querySelectorAll('input[name="keiyufuka"]:checked');
+    var selectedValues = [];
+    checkboxes.forEach(function(checkbox) {
+        selectedValues.push(checkbox.value);
+    });
+    if (selectedValues.includes("高崎") && selectedValues.includes("友部")) {
+        selectedValues.push("小山");
+    } 
+    if (selectedValues.includes("倉賀野") && selectedValues.includes("友部")) {
+        selectedValues.push("小山");
+        selectedValues.push("高崎");
+
+    } 
+    return selectedValues
+}
+
+function isInArray(array, value){
+    for (let i = 0; i < array.length; i++) {
+      const key = array[i];
+      if (key === '') {
+        continue;
+      }
+      if (value.includes(key)) {
+        return true;
+      }
+    }
+    return false; 
+  }

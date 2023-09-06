@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ランダム大回り乗車ルートメーカー</title>
+    <link rel="icon" href="favicon.ico">
 </head>
 <body>
         <nav class id="navigation">
@@ -35,20 +36,45 @@
                 <span class="radio-text">軽めに9~15駅</span>
             </label>
             <label class="custom-radio">
-                <input type="radio" name="ekisuu" value="15,30" >
-                <span class="radio-text">乗り鉄15~25駅</span>
+                <input type="radio" name="ekisuu" value="16,22" >
+                <span class="radio-text"> 乗り鉄16~22駅</span>
+            </label>
+            <label class="custom-radio">
+                <input type="radio" name="ekisuu" value="23,30" >
+                <span class="radio-text">いつもより長めに23~30駅</span>
             </label>
             <label class="custom-radio">
                 <input type="radio" name="ekisuu" value="31,40" >
-                <span class="radio-text">早朝から深夜まで25~35駅</span>
+                <span class="radio-text">早朝から深夜まで31~40駅</span>
             </label>
             <label class="custom-radio">
                 <input type="radio" name="ekisuu" value="41,100" >
-                <span class="radio-text">日帰りほぼ不可35〜駅</span>
+                <span class="radio-text">日帰りほぼ不可41駅以上</span>
             </label>
             <label class="custom-radio">
                 <input type="radio" name="ekisuu" value="0,100" checked>
                 <span class="radio-text">駅数指定なし</span>
+            </label>
+            <p id="koumoku">経由不可にする駅</p>
+            <label class="custom-toggle">
+                <input type="checkbox" name="keiyufuka" value="高崎" >
+                <span class="toggle-text">高崎</span>
+            </label>
+            <label class="custom-toggle">
+                <input type="checkbox" name="keiyufuka" value="倉賀野" >
+                <span class="toggle-text">倉賀野</span>
+            </label>
+            <label class="custom-toggle">
+                <input type="checkbox" name="keiyufuka" value="友部" >
+                <span class="toggle-text">友部</span>
+            </label>
+            <label class="custom-toggle">
+                <input type="checkbox" name="keiyufuka" value="安房鴨川" >
+                <span class="toggle-text">安房鴨川</span>
+            </label>
+            <label class="custom-toggle">
+                <input type="checkbox" name="keiyufuka" value="浜川崎" >
+                <span class="toggle-text">浜川崎</span>
             </label>
         </form>
     </div>    
@@ -138,7 +164,7 @@
         <option value="大船 - 磯子">大船 - 磯子</option>
         <option value="横浜 - 磯子">横浜 - 磯子</option>                 
     </select>
-    <button id="generate-button" onclick="generateRoute()">ランダムルート生成</button>
+    <button class="generate-button" onclick="generateRoute()">ランダムルート生成</button>
     <p id="output"></p>
     <script src="js2.js"></script>
 </body>
