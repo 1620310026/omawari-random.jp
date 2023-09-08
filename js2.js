@@ -244,4 +244,14 @@ function isInArray(array, value){
       }
     }
     return false; 
-  }
+}
+
+function showElement() {
+    var selectedValue = document.querySelector('input[name="1"]:checked').value;
+    var elementToShow = document.getElementById('elementToShow');
+    if (selectedValue === "n") {
+        elementToShow.style.display = "block";
+    } else {
+        elementToShow.style.display = "none";
+    }
+}
