@@ -53,11 +53,7 @@ let stationConnections = {
     "浜川崎": ["鶴見", "尻手"],
     "日暮里": ["上野", "田端", "尾久", "新松戸"]
 };
-let ekisuumin = 0
-let ekisuumax = 100
 
-
-// プルダウンメニューに駅の情報を追加
 const dropdown = document.getElementById("dropdown");
 for (const station in stationConnections) {
     const option = document.createElement("option");
@@ -74,12 +70,18 @@ function generateRandomRouteJS(selectedStation) {
     const selectedEkisuu = document.querySelector('input[name="ekisuu"]:checked').value;
     const [ekisuumin, ekisuumax] = selectedEkisuu.split(",").map(Number);
     let keiyufuka = liststation();
+    const output = document.getElementById('output');
+
     if (isInArray(keiyufuka, startGoal)) {
-        const output = document.getElementById('output');
         output.textContent = "経由不可の駅を通らないルートを作成できません。";
-    }else{
+    } else {
         try {
-            while (true) {
+            let iterationCount = 0; 
+            const maxIterations = 500000; 
+            output.textContent = "ルート生成中...";
+
+            setTimeout(() =>{
+            while (iterationCount < maxIterations) {
                 const currentStation = route[route.length - 1];
                 const availableStations = stationConnections[currentStation].filter(station => !route.slice(1).includes(station));
                 
@@ -102,13 +104,9 @@ function generateRandomRouteJS(selectedStation) {
                         }
                         
                         if (route.length >= ekisuumin && route.length <= ekisuumax && !isInArray(keiyufuka,"ルート: " + route.join(" → "))) {
-                            console.log("ルート: " + route.join(" → "));
                             const output = document.getElementById('output');
                             output.textContent = route.join(" → ");
-    
-                            
                             return route;
-    
                         } else {
                             route.length = 1;
                             visitedStations.clear();
@@ -117,7 +115,16 @@ function generateRandomRouteJS(selectedStation) {
                     }
                     visitedStations.add(nextStation);
                 }
+
+                iterationCount++; 
             }
+
+            if (iterationCount === maxIterations) {
+                const output = document.getElementById('output');
+                output.textContent = "経由不可にする駅の指定が多すぎるため、指定した駅数を経由するルートを生成できませんでした";
+            }
+            }, 100); 
+
         } catch (error) {
             console.error("エラーが発生しました。ルートを再生成します。");
             return generateRandomRouteJS(selectedStation, ekisuumin, ekisuumax);
@@ -127,13 +134,16 @@ function generateRandomRouteJS(selectedStation) {
 
 
 
+
 function generateRandomRoute(selectedValues) {
     const dropdown = document.getElementById('dropdown');
     const selectedSection = dropdown.value;
+    const output = document.getElementById('output');
+
+
     if (isInArray(selectedValues, selectedSection)) {
         const output = document.getElementById('output');
         output.textContent = "経由不可の駅を通らないルートを作成できません。";
-
     } else {
         if (selectedSection.includes(" - ")) {
             const [startStation, goalStation] = selectedSection.split(" - ");
@@ -141,26 +151,32 @@ function generateRandomRoute(selectedValues) {
             const selectedEkisuu = document.querySelector('input[name="ekisuu"]:checked').value;
             const [ekisuumin, ekisuumax] = selectedEkisuu.split(",").map(Number);
             const [actualStart, actualGoal] = shouldSwap ? [goalStation, startStation] : [startStation, goalStation];
-    
             let result = [];
+            let attempts = 0;
+            output.textContent = "ルートを生成中..."; 
+            setTimeout(() =>{
             do {
                 result = generateRandomRoutePython(actualStart, actualGoal);
-            }while (
-                result.length <= 1 ||
+                attempts++; 
+            } while (
+                (result.length <= 1 ||
                 result.length > ekisuumax ||
                 result.length < ekisuumin ||
-                isInArray(selectedValues, `始点駅 → ${result.join(' → ')} → 終点駅`)
+                isInArray(selectedValues, `始点駅 → ${result.join(' → ')} → 終点駅`)) &&
+                attempts < 50000 
             );
-    
-    
-            const output = document.getElementById('output');
-            output.textContent = `始点駅 → ${result.join(' → ')} → 終点駅`;
-            
+            if (attempts >= 50000) {
+                output.textContent = "経由不可にする駅の指定が多すぎるため、指定した駅数を経由するルートを生成できませんでした";
+            } else {
+                output.textContent = `始点駅 → ${result.join(' → ')} → 終点駅`;
+            }
+            }, 100); 
         } else {
             console.error('Invalid section format.');
-        }
-      }      
+        } 
+    }      
 }
+
 
 
 function generateRandomRoutePython(startStation, goalStation) {
@@ -251,7 +267,11 @@ function showElement() {
     var elementToShow = document.getElementById('elementToShow');
     if (selectedValue === "n") {
         elementToShow.style.display = "block";
+        const sentaku = document.getElementById('sentaku');
+        sentaku.textContent = `大回り乗車の始点となる駅のある区間もしくは駅（乗換駅+αのみ）を選択`;
     } else {
         elementToShow.style.display = "none";
+        const sentaku = document.getElementById('sentaku');
+        sentaku.textContent = `大回り乗車の始点・終点となる駅のある区間もしくは駅（乗換駅+αのみ）を選択`;
     }
 }

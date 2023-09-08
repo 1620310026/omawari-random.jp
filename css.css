@@ -116,6 +116,8 @@ display: inline-block;
 justify-content: flex-start; /* テキストを左揃えにする */
 margin: 0px;
 font-size: 0px;
+overflow-x: auto;
+white-space: nowrap;
 }
 
 nav ul {
@@ -123,6 +125,7 @@ list-style: none;
 margin: 0px;
 height: 50px; 
 letter-spacing:normal;
+white-space: nowrap;
 }
 
 nav ul li {
