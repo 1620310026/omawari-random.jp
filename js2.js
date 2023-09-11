@@ -6,12 +6,14 @@ let stationConnections = {
     "成田": ["香取", "我孫子", "佐倉"],
     "大宮": ["小山", "高麗川", "倉賀野", "南浦和", "武蔵浦和"],
     "南浦和": ["新松戸", "武蔵浦和", "大宮", "赤羽"],
+    "日暮里": ["上野", "田端", "尾久", "新松戸"],
     "上野": ["秋葉原", "日暮里"],
     "尾久": ["日暮里", "赤羽"],
     "西船橋": ["新松戸", "千葉", "錦糸町", "南船橋", "市川塩浜"],
     "香取": ["松岸", "成田"],
     "佐倉": ["成田", "成東", "千葉"],
     "高麗川": ["大宮", "倉賀野", "拝島"],
+    "高崎": ["小山", "倉賀野"],
     "倉賀野": ["大宮", "高麗川", "高崎"],
     "武蔵浦和": ["南浦和", "大宮", "赤羽", "西国分寺"],
     "赤羽": ["南浦和", "武蔵浦和", "尾久", "田端", "池袋"],
@@ -44,14 +46,12 @@ let stationConnections = {
     "茅ヶ崎": ["橋本", "大船"],
     "東神奈川": ["橋本", "横浜", "鶴見"],
     "尻手": ["武蔵小杉", "浜川崎", "川崎"],
+    "浜川崎": ["鶴見", "尻手"],
     "鶴見": ["浜川崎", "武蔵小杉", "東神奈川", "川崎"],
     "大船": ["茅ヶ崎", "横浜", "磯子"],
     "横浜": ["東神奈川", "磯子", "大船"],
     "磯子": ["大船", "横浜"],
-    "川崎": ["品川", "鶴見", "尻手"],
-    "高崎": ["小山", "倉賀野"],
-    "浜川崎": ["鶴見", "尻手"],
-    "日暮里": ["上野", "田端", "尾久", "新松戸"]
+    "川崎": ["品川", "鶴見", "尻手"]
 };
 
 const dropdown = document.getElementById("dropdown");
@@ -73,7 +73,7 @@ function generateRandomRouteJS(selectedStation) {
     const output = document.getElementById('output');
 
     if (isInArray(keiyufuka, startGoal)) {
-        output.textContent = "経由不可の駅を通らないルートを作成できません。";
+        output.textContent = "経由不可の駅を通らない大回りのルートを作成できません。";
     } else {
         try {
             let iterationCount = 0; 
@@ -121,7 +121,7 @@ function generateRandomRouteJS(selectedStation) {
 
             if (iterationCount === maxIterations) {
                 const output = document.getElementById('output');
-                output.textContent = "経由不可にする駅の指定が多すぎるため、指定した駅数を経由するルートを生成できませんでした";
+                output.textContent = "遠すぎる、もしくは経由不可にする駅の指定が多すぎるため、指定した駅数を経由するルートを生成できませんでした";
             }
             }, 100); 
 
@@ -132,9 +132,6 @@ function generateRandomRouteJS(selectedStation) {
     }
 }
 
-
-
-
 function generateRandomRoute(selectedValues) {
     const dropdown = document.getElementById('dropdown');
     const selectedSection = dropdown.value;
@@ -143,7 +140,7 @@ function generateRandomRoute(selectedValues) {
 
     if (isInArray(selectedValues, selectedSection)) {
         const output = document.getElementById('output');
-        output.textContent = "経由不可の駅を通らないルートを作成できません。";
+        output.textContent = "経由不可の駅を通らない大回りのルートを作成できません。";
     } else {
         if (selectedSection.includes(" - ")) {
             const [startStation, goalStation] = selectedSection.split(" - ");
@@ -166,7 +163,7 @@ function generateRandomRoute(selectedValues) {
                 attempts < 50000 
             );
             if (attempts >= 50000) {
-                output.textContent = "経由不可にする駅の指定が多すぎるため、指定した駅数を経由するルートを生成できませんでした";
+                output.textContent = "遠すぎる、もしくは経由不可にする駅の指定が多すぎるため、指定した駅数を経由するルートを生成できませんでした";
             } else {
                 output.textContent = `始点駅 → ${result.join(' → ')} → 終点駅`;
             }
@@ -176,8 +173,6 @@ function generateRandomRoute(selectedValues) {
         } 
     }      
 }
-
-
 
 function generateRandomRoutePython(startStation, goalStation) {
     const stationList = Object.keys(stationConnections);
@@ -223,12 +218,156 @@ function generateRoute() {
     const dropdown = document.getElementById("dropdown");
     const selectedSection = dropdown.value;
     let result = liststation();
-    if (selectedSection.includes(" - ")) {
-        generateRandomRoute(result);
-    } else {
-        generateRandomRouteJS(selectedSection);
+    let result2 = liststation2();
+
+    var selectedValue = document.querySelector('input[name="1"]:checked').value;
+    if (selectedValue === "o") {
+        if (selectedSection.includes(" - ")) {
+            generateRandomRoute(result);
+        } else {
+            generateRandomRouteJS(selectedSection);
+        }
+    }else {
+        let startStation = "a"
+        let goalStation = "a"
+        let outputoption = 3
+        const dropdown2 = document.getElementById("dropdown2");
+        const selectedSection2 = dropdown2.value;
+        const output = document.getElementById('output');
+        if (selectedSection === selectedSection2){
+            output.textContent = "始点・終点が同じ駅・区間にしたい場合は、ルートの形状を「O型(一周)」に指定してルートの生成を行ってください";
+            return;
+        }
+        let samecheck = "a"
+        let fuka = "aaaaaaaabbbbb"
+        while(startStation === goalStation){
+            startStation = "a"
+            goalStation = "a"
+            outputoption = 3
+            samecheck = "a"
+            if (selectedSection2.includes(" - ")) {
+            }
+            else{
+                samecheck = selectedSection2
+            }
+    
+            if (selectedSection.includes(" - ")) {
+                const [startStation1, startStation2] = selectedSection.split(" - ");
+                if(isInArray(result2, startStation1)) {
+                    if(isInArray(result2, startStation2)) {
+                        output.textContent = "経由不可の駅を通らない大回りのルートを作成できません。";
+                        return;
+                    }
+                    else{
+                        startStation = startStation2
+                    }
+                }
+                else{
+                    if(isInArray(result2, startStation2)) {
+                        startStation = startStation1
+                    }
+                    else{
+                        if (Math.random() < 0.5) {
+                            if(samecheck === startStation1){
+                                startStation = startStation2
+                                fuka = startStation2 + " → " + startStation1
+                            }
+                            else{
+                                startStation = startStation1
+                                fuka = startStation1 + " → " + startStation2
+                            }
+                        }
+                        else{
+                            if(samecheck === startStation2){
+                                startStation = startStation1
+                                fuka = startStation1 + " → " + startStation2
+                            }
+                            else{
+                                startStation = startStation2
+                                fuka = startStation2 + " → " + startStation1
+                            }
+                        }
+    
+                    }
+    
+                }
+    
+            }
+            else{
+                if(isInArray(result2, selectedSection)) {
+                    output.textContent = "経由不可の駅を通らない大回りのルートを作成できません。";
+                    return;
+                }
+                else{
+                    startStation = selectedSection
+                    outputoption = outputoption - 1
+                    samecheck = selectedSection
+                }
+            }
+            
+            if (selectedSection2.includes(" - ")) {
+                const [goalStation1, goalStation2] = selectedSection2.split(" - ");
+                if(isInArray(result2, goalStation1)) {
+                    if(isInArray(result2, goalStation2)) {
+                        output.textContent = "経由不可の駅を通らない大回りのルートを作成できません。";
+                        return;
+                    }
+                    else{
+                        goalStation = goalStation2
+                    }
+                }
+                else{
+                    if(isInArray(result2, goalStation2)) {
+                        goalStation = goalStation1
+                    }
+                    else{
+                        if (Math.random() < 0.5) {
+                            if(samecheck === goalStation1){
+                                goalStation = goalStation2
+                            }
+                            else{
+                            goalStation = goalStation1
+                            }
+                        }
+                        else{
+                            if(samecheck === goalStation2){
+                                goalStation = goalStation1
+                            }
+                            goalStation = goalStation2
+                        }
+    
+                    }
+    
+                }
+    
+            }
+            else{
+                if(isInArray(result2, selectedSection2)) {
+                    output.textContent = "経由不可の駅を通らない大回りのルートを作成できません。";
+                    return;
+                }
+                else{
+                    goalStation = selectedSection2
+                    outputoption = outputoption - 2
+                }
+            }
+            
+            if(isInArray(result2, startStation)) {
+                output.textContent = "経由不可の駅を通らない大回りのルートを作成できません。";
+                return;
+            }
+            
+            if(isInArray(result2, goalStation)) {
+                output.textContent = "経由不可の駅を通らない大回りのルートを作成できません。";
+                return;
+            }
+            
+        }
+        generateRandomRoute2(startStation,goalStation,outputoption,fuka);
     }
 }
+
+
 
 function liststation(){
     var checkboxes = document.querySelectorAll('input[name="keiyufuka"]:checked');
@@ -236,16 +375,24 @@ function liststation(){
     checkboxes.forEach(function(checkbox) {
         selectedValues.push(checkbox.value);
     });
+    if (selectedValues.includes("倉賀野")) {
+        selectedValues.push("高崎");
+    } 
     if (selectedValues.includes("高崎") && selectedValues.includes("友部")) {
         selectedValues.push("小山");
-    } 
-    if (selectedValues.includes("倉賀野") && selectedValues.includes("友部")) {
-        selectedValues.push("小山");
-        selectedValues.push("高崎");
     } 
     if (selectedValues.includes("安房鴨川") && selectedValues.includes("友部")) {
         selectedValues.push("木更津");
     } 
+    return selectedValues
+}
+
+function liststation2(){
+    var checkboxes = document.querySelectorAll('input[name="keiyufuka"]:checked');
+    var selectedValues = [];
+    checkboxes.forEach(function(checkbox) {
+        selectedValues.push(checkbox.value);
+    });
     return selectedValues
 }
 
@@ -269,9 +416,56 @@ function showElement() {
         elementToShow.style.display = "block";
         const sentaku = document.getElementById('sentaku');
         sentaku.textContent = `大回り乗車の始点となる駅のある区間もしくは駅（乗換駅+αのみ）を選択`;
+        const dropdown2 = document.getElementById("dropdown2");
+        for (const station in stationConnections) {
+            const option = document.createElement("option");
+            option.value = station;
+            option.textContent = station;
+            dropdown2.appendChild(option);
+        }        
     } else {
         elementToShow.style.display = "none";
         const sentaku = document.getElementById('sentaku');
         sentaku.textContent = `大回り乗車の始点・終点となる駅のある区間もしくは駅（乗換駅+αのみ）を選択`;
     }
+}
+
+function generateRandomRoute2(startStation,goalStation,outputoption,fuka) {
+    const output = document.getElementById('output');
+    const selectedEkisuu = document.querySelector('input[name="ekisuu"]:checked').value;
+    const [ekisuumin, ekisuumax] = selectedEkisuu.split(",").map(Number);
+    let result = [];
+    let attempts = 0;
+    output.textContent = "ルートを生成中...";
+    let selectedValues = liststation2();
+    selectedValues[selectedValues.length] = fuka;
+ 
+    setTimeout(() =>{
+    do {
+        result = generateRandomRoutePython(startStation, goalStation,);
+        attempts++; 
+    } while (
+        (result.length <= 1 ||
+        result.length > ekisuumax ||
+        result.length < ekisuumin ||
+        isInArray(selectedValues, `${result.join(' → ')}`)) &&
+        attempts < 20000 
+    );
+    if (attempts >= 20000) {
+        output.textContent = "遠すぎる、もしくは経由不可にする駅の指定が多すぎるため、指定した駅数を経由する大回りのルートを生成できませんでした";
+    } else {
+        if(outputoption === 1){
+            output.textContent = `始点駅 → ${result.join(' → ')}`;
+        }
+        if(outputoption === 2){
+            output.textContent = `${result.join(' → ')} → 終点駅`;
+        }
+        if(outputoption === 3){
+            output.textContent = `始点駅 → ${result.join(' → ')} → 終点駅`;
+        }
+        if(outputoption === 0){
+            output.textContent = `${result.join(' → ')}`;
+        }
+    }
+    }, 100);  
 }
