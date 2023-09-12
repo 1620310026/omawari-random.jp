@@ -14,6 +14,7 @@ margin-bottom: 5px;
 
 h2{
   font-size: 25px;
+  margin-bottom: 0px;
   }
 
 p {
@@ -115,6 +116,20 @@ display: inline-block;
 ul{
 margin-block-end: 0px;
 margin-block-start: 0px;
+}
+
+#form{
+  padding: 5px 10px;
+  border-radius: 10px;    
+  text-align: left;
+  border: 5px solid #95ccff;
+
+}
+
+.mini p {
+  font-size: 16px;
+  color: #8a8a8a;
+  text-align: center;
 }
 
 nav {

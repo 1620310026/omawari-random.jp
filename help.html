@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ランダム大回り乗車ルートメーカー</title>
     <link rel="icon" href="favicon.ico">
-    <meta name="description" content="ランダムで大回り乗車のルートを生成します。各種オプションで経路の長さなども指定できます。" />
+    <meta name="description" content="ランダム大回り乗車ルートメーカーの使い方を説明します" />
 </head>
 <body>
         <nav class id="navigation">
@@ -16,8 +16,10 @@
                 <li><a href="whatomawari.html">大回り乗車とは?</a></li>
             </ul>
         </nav>    
-    <h1>ランダム大回り乗車ルートメーカー</h1>
-    <div id="form">
+    <h1>ランダム大回り乗車ルートメーカーの使い方</h1>
+    <p>このページでは使い方を説明しています。ルートは<a href="index.html">こちら</a>でのみ生成できます。</p>    
+    <p>ルート生成の注意事項は<a href="index.html#caution">こちら</a>、大回り乗車については<a href="whatomawari.html">大回り乗車とは</a>をご覧ください。</p>
+    <br>
         <form>
             <p id="koumoku">ルートの形状</p>
             <label class="custom-radio">
@@ -28,6 +30,10 @@
                 <input type="radio" name="1" value="n" onclick="showElement();">
                 <span class="radio-text">始点・終点指定</span>
             </label>
+        <form>
+        <p>ルートの形状を指定できます。O型は一周して帰ってくるルートのことを指し、始点・終点が同じになるので始点・終点の選択項目は一つになります。始点・終点指定はある目的地に向かうついでに大回り乗車をしたいというときなどに利用できます。始点と終点が異なるため、始点・終点の選択項目は2つになります。</p>
+        <br>
+        <form>    
             <p id="koumoku">長さ・経由する乗り換え駅の数</p>
             <label class="custom-radio">
                 <input type="radio" name="ekisuu" value="0,8" >
@@ -57,6 +63,10 @@
                 <input type="radio" name="ekisuu" value="0,100" checked>
                 <span class="radio-text">駅数指定なし</span>
             </label>
+        </form>
+        <p>経由する乗換駅の数を指定し、経路の大体の長さを絞ることができます。</p>
+        <br>
+        </form>
             <p id="koumoku">経由不可にする駅</p>
             <label class="custom-toggle">
                 <input type="checkbox" name="keiyufuka" value="高崎" >
@@ -87,7 +97,8 @@
                 <span class="toggle-text">浜川崎</span>
             </label>
         </form>
-    </div>    
+        <p>クリックすると経由不可にする駅を指定できます（すでに指定されている場合は指定が解除されます）。これにより、長い路線やあまり面白くない路線に乗らないようにすることができます。</p>
+        <br>
     <p id="sentaku">大回り乗車の始点・終点となる駅のある区間もしくは駅（乗換駅+αのみ）を選択</p>
     <select id="dropdown">
         <option value="友部 - 小山">友部 - 小山</option>
@@ -262,29 +273,17 @@
         <option value="横浜 - 磯子">横浜 - 磯子</option>
     </select>
     </div>
-    <button class="generate-button" onclick="generateRoute()">ランダムルート生成</button>
-    <p id="output"><br><br><br><br><br></p>
+    <button class="generate-button" >ランダムルート生成</button>
+    <p>区間か駅（乗換駅+αのみ）を選択肢、経路の始点・終点を指定します。その後、「ランダムルート生成」のボタンをクリックするとルートを生成することができます。</p>
     <br>
-    <button onclick="download()" class="generate-button">生成されたルートを画像に変換してダウンロード</button>
-    <p>東京近郊区間の特例を利用した大回り乗車のルートをランダムで生成します。</p>
-    <p>大回り乗車については、<a href="whatomawari.html">大回り乗車とは?</a>のページををご覧ください。</p>
-    <p>また、生成されたルートに関する注意事項がございますので、<a href="#caution">こちら</a>もご覧ください。</p>
-    <p>現在、<a href="https://www.jreast.co.jp/kippu/1103.html">東京近郊区間</a>のみに対応しております。</p>
-    <p>詳しい使い方は、<a href="help.html">使い方</a>のページをご覧ください。</p>
-    <br>
+    <button class="generate-button">生成されたルートを画像に変換してダウンロード</button>
+    <p>このボタンをクリックすると、生成したルートを記した画像をダウンロードできます。</p>
     <script src="js2.js"></script>
-    <h2 id="caution">ルート生成に関する注意事項</h2>
-    <h3>常磐線三河島方面もしくは山手線・京浜東北線西日暮里方面と宇都宮線・高崎線尾久方面の乗り換え</h3>
-    <p>宇都宮線・高崎線の全列車は日暮里駅を通過します。そのため、三河島・西日暮里方面から尾久方面に向かう（逆も）には一度上野駅まで行って乗り換える必要があります。しかし規則上では宇都宮線・高崎線は日暮里駅を通っているという扱いになっております。そのため、上野〜日暮里間が重複乗車になってしまい、大回り乗車ができなくなります。</p>
-    <p>ただし、詳細は省きますが<a href="https://www.jreast.co.jp/ryokaku/02_hen/03_syo/01_setsu/03.html">旅客営業規則第69条</a>、<a href="https://www.jreast.co.jp/ryokaku/02_hen/03_syo/01_setsu/04.html">第70条</a>や<a href="https://www.jreast.co.jp/kippu/1106.html">特定の分岐区間に対する区間外乗車の特例</a>によって、この区間は重複乗車にはならないとする解釈が多数です。JR東日本公式アプリの乗換案内でこの区間を含む経路を検索しても大回り乗車が可能だったので、このルートが生成されたときは上野まで行って乗り換えても問題はなさそうです。</p>
-    <p>ただ、公式の見解がはっきりと示されたことはなく、駅員によって対応が変わる可能性などもあるため、不安な人は京浜東北線田端経由で移動する（元々のルートで田端を通らない場合）かルートを再生成するといったことで対応してください。</p>
-    <h3>本サイトでの折り返し乗車の特例の扱い</h3>
-    <p>本サイトで生成されたルートは、指定された区間で分岐駅を通過してしまう列車から乗り換えるため、その区間の運賃は計算しないという<a href="https://www.jreast.co.jp/kippu/1105.html">折り返し乗車の特例</a>などを使用しないルートになっております。</p>
     <br>
     <div class="mini">
-    <p>本サイトのソースコードは<a href="https://github.com/1620310026/omawari-random.jp">GitHub</a>で公開されています。</p>
-    <p>本サイトのソースコードはMITライセンスに基づいてライセンスされています。ライセンスと著作権表示を行えば、商用利用・再頒布などが可能です。詳しくは<a href="https://github.com/1620310026/omawari-random.jp/blob/main/LICENSE">こちら</a>をご覧ください。</p>
-    <p>©2023 1620310026</p>
+        <p>本サイトのソースコードは<a href="https://github.com/1620310026/omawari-random.jp">GitHub</a>で公開されています。</p>
+        <p>本サイトのソースコードはMITライセンスに基づいてライセンスされています。ライセンスと著作権表示を行えば、商用利用・再頒布などが可能です。詳しくは<a href="https://github.com/1620310026/omawari-random.jp/blob/main/LICENSE">こちら</a>をご覧ください。</p>
+        <p>©2023 1620310026</p>
     </div>
 </body>
 </html>
