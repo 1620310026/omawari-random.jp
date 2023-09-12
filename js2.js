@@ -160,9 +160,9 @@ function generateRandomRoute(selectedValues) {
                 result.length > ekisuumax ||
                 result.length < ekisuumin ||
                 isInArray(selectedValues, `始点駅 → ${result.join(' → ')} → 終点駅`)) &&
-                attempts < 50000 
+                attempts < 20000 
             );
-            if (attempts >= 50000) {
+            if (attempts >= 20000) {
                 output.textContent = "遠すぎる、もしくは経由不可にする駅の指定が多すぎるため、指定した駅数を経由するルートを生成できませんでした";
             } else {
                 output.textContent = `始点駅 → ${result.join(' → ')} → 終点駅`;
