@@ -10,11 +10,18 @@
 <body>
         <nav class id="navigation">
             <ul>
-                <li href="index.html"><a href="index.html">ランダム大回り乗車ルートメーカー</a></li>
-                <li href="help.html"><a href="help.html">大回り乗車とは？</a></li>
+                <li><a href="index.html">ランダム大回り乗車ルートメーカー</a></li>
+                <li><a href="help.html">使い方</a></li>
+                <li><a href="whatomawari.html">大回り乗車とは？</a></li>
             </ul>
         </nav>    
     <h1>ランダム大回り乗車ルートメーカー</h1>
+    <p>大都市近郊区間内のみをご利用になる場合の特例を利用した大回り乗車のルートをランダムで生成します</p>
+    <p>大回り乗車については、<a href="whatomawari.html">こちら</a>をご覧ください</p>
+    <p>また、生成されたルートに関する注意事項がございますので、<a href="#caution">こちら</a>もご覧ください</p>
+    <p>現在、<a href="https://www.jreast.co.jp/kippu/1103.html">東京近郊区間</a>のみに対応しております</p>
+    <p>詳しい使い方は、<a href="help.html">こちら</a>をご覧ください</p>
+    <br>
     <div id="form">
         <form>
             <p id="koumoku">ルートの形状</p>
@@ -259,5 +266,12 @@
     <button class="generate-button" onclick="generateRoute()">ランダムルート生成</button>
     <p id="output"></p>
     <script src="js2.js"></script>
+    <h2 id="caution">ルート生成に関する注意事項</h2>
+    <h3>常磐線三河島方面もしくは山手線・京浜東北線西日暮里方面と宇都宮線・高崎線尾久方面の乗り換え</h3>
+    <p>宇都宮線・高崎線の全列車は日暮里駅を通過します。そのため、三河島・西日暮里方面から尾久方面に向かう（逆も）には一度上野駅まで行って乗り換える必要があります。しかし規則上では宇都宮線・高崎線は日暮里駅を通っているという扱いになっております。そのため、上野〜日暮里間が重複乗車になってしまい、大回り乗車ができなくなります。</p>
+    <p>ただし、詳細は省きますが<a href="https://www.jreast.co.jp/ryokaku/02_hen/03_syo/01_setsu/03.html">旅客営業規則第69条</a>、<a href="https://www.jreast.co.jp/ryokaku/02_hen/03_syo/01_setsu/04.html">第70条</a>や<a href="https://www.jreast.co.jp/kippu/1106.html">特定の分岐区間に対する区間外乗車の特例</a>によって、この区間は重複乗車にはならないとする解釈が多数です。JR東日本公式アプリの乗換案内でこの区間を含む経路を検索しても大回り乗車が可能だったので、このルートが生成されたときは上野まで行って乗り換えても問題はなさそうです。</p>
+    <p>ただ、公式の見解がはっきりと示されたことはなく、駅員によって対応が変わる可能性などもあるため、不安な人は京浜東北線田端経由で移動する（元々のルートで田端を通らない場合）かルートを再生成するといったことで対応してください。</p>
+    <h3>本サイトでの折り返し乗車の特例の扱い</h3>
+    <p>本サイトで生成されたルートは、指定された区間で分岐駅を通過してしまう列車から乗り換えるため、その区間の運賃は計算しないという<a href="https://www.jreast.co.jp/kippu/1105.html">折り返し乗車の特例</a>などを使用しないルートになっております。</p>
 </body>
 </html>
