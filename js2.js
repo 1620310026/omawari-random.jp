@@ -469,3 +469,57 @@ function generateRandomRoute2(startStation,goalStation,outputoption,fuka) {
     }
     }, 100);  
 }
+
+function download(){
+    const output = document.getElementById('output');
+    const outputtext = output.textContent;
+    const text = outputtext; 
+    const fontSize = 20;
+    const maxWidth = 250; // 画像の最大幅を指定
+    const lineHeight = 1; // 行間を調整する値を指定
+
+    // テキストをCanvasに描画
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+    context.font = `${fontSize}px Arial`;
+
+    // テキストを折り返して描画
+    const words = text.split(' ');
+    let lines = [];
+    let currentLine = '';
+
+    for (const word of words) {
+        const testLine = currentLine === '' ? word : `${currentLine} ${word}`;
+        const testWidth = context.measureText(testLine).width;
+
+        if (testWidth <= maxWidth) {
+            currentLine = testLine;
+        } else {
+            lines.push(currentLine);
+            currentLine = word;
+        }
+    }
+
+    lines.push(currentLine);
+
+    canvas.width = maxWidth;
+    const totalHeight = lines.length * (fontSize * lineHeight);
+    canvas.height = totalHeight; // 行間を含む高さを設定
+    context.fillStyle = 'white'; // 背景色を白に設定
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    context.fillStyle = 'black';
+
+    lines.forEach((line, index) => {
+        const y = (index + 1) * (fontSize * lineHeight);
+        context.fillText(line, 10, y - (fontSize * 0.2)); // 上下に余白を調整
+    });
+
+    // Canvasを画像として保存
+    const image = canvas.toDataURL('image/png');
+
+    // 画像をダウンロード
+    const a = document.createElement('a');
+    a.href = image;
+    a.download = 'omawari_random_route.png'; // 保存するファイル名を指定
+    a.click();
+}

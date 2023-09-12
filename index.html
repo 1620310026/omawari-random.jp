@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ランダム大回り乗車ルートメーカー</title>
     <link rel="icon" href="favicon.ico">
+    <meta name="description" content="ランダムで大回り乗車のルートを生成します。各種オプションで経路の長さなども指定できます。" />
 </head>
 <body>
         <nav class id="navigation">
@@ -74,6 +75,10 @@
             <label class="custom-toggle">
                 <input type="checkbox" name="keiyufuka" value="友部" >
                 <span class="toggle-text">友部</span>
+            </label>
+            <label class="custom-toggle">
+                <input type="checkbox" name="keiyufuka" value="香取" >
+                <span class="toggle-text">香取</span>
             </label>
             <label class="custom-toggle">
                 <input type="checkbox" name="keiyufuka" value="安房鴨川" >
@@ -265,6 +270,8 @@
     </div>
     <button class="generate-button" onclick="generateRoute()">ランダムルート生成</button>
     <p id="output"></p>
+    <br>
+    <button onclick="download()" class="generate-button">生成されたルートを画像に変換してダウンロード</button>
     <script src="js2.js"></script>
     <h2 id="caution">ルート生成に関する注意事項</h2>
     <h3>常磐線三河島方面もしくは山手線・京浜東北線西日暮里方面と宇都宮線・高崎線尾久方面の乗り換え</h3>
@@ -273,5 +280,8 @@
     <p>ただ、公式の見解がはっきりと示されたことはなく、駅員によって対応が変わる可能性などもあるため、不安な人は京浜東北線田端経由で移動する（元々のルートで田端を通らない場合）かルートを再生成するといったことで対応してください。</p>
     <h3>本サイトでの折り返し乗車の特例の扱い</h3>
     <p>本サイトで生成されたルートは、指定された区間で分岐駅を通過してしまう列車から乗り換えるため、その区間の運賃は計算しないという<a href="https://www.jreast.co.jp/kippu/1105.html">折り返し乗車の特例</a>などを使用しないルートになっております。</p>
+    <h2>その他</h2>
+    <p>本サイトのソースコードは<a href="https://github.com/1620310026/omawari-random.jp">GitHub</a>で公開されています。</p>
+    <p>本サイトのソースコードはMITライセンスに基づいてライセンスされています。ライセンスと著作権表示を行えば、商用利用・再頒布などが可能です。詳しくは<a href="https://github.com/1620310026/omawari-random.jp/blob/main/LICENSE">こちら</a>をご覧ください。</p>
 </body>
 </html>
