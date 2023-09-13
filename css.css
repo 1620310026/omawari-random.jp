@@ -184,3 +184,23 @@ font-size: 15px;
 nav ul li:hover {
 background-color: #1856a1;
 }
+
+.container {
+  display: flex;
+  align-items: center; /* 垂直方向の中央揃え */
+}
+
+.lefttext {
+  flex: 1; /* 左側のコンテンツが可変幅 */
+  padding: 20px; /* 適切な余白を設定 */
+}
+
+.rightimage {
+  flex: 1; /* 右側のコンテンツが可変幅 */
+  ;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
