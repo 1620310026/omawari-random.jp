@@ -158,6 +158,7 @@ margin: 0px;
 height: 50px; 
 letter-spacing:normal;
 vertical-align: text-top;
+overflow: hidden;
 }
 
 nav ul li {
