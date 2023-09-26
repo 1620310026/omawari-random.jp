@@ -26,13 +26,8 @@ let stationConnections = {
     "和歌山": ["高田", "天王寺"]
 };
 
-const dropdown = document.getElementById("dropdown");
-for (const station in stationConnections) {
-    const option = document.createElement("option");
-    option.value = station;
-    option.textContent = station;
-    dropdown.appendChild(option);
-}
+
+
 
 function generateRandomRouteJS(selectedStation) {
     const stationList = Object.keys(stationConnections);
@@ -512,4 +507,12 @@ function wrapText(text, context, maxWidth, fontSize) {
 
     lines.push(currentLine);
     return lines;
+}
+
+const dropdown = document.getElementById("dropdown");
+for (const station in stationConnections) {
+    const option = document.createElement("option");
+    option.value = station;
+    option.textContent = station;
+    dropdown.appendChild(option);
 }
